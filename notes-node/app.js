@@ -6,7 +6,7 @@ const os = require('os');
 
 let userName = os.userInfo().username;
 
-fs.appendFile("greeting.txt", "Hello, "+ userName + "!!", function(err){
+fs.appendFile("greeting.txt", `Hello, ${userName}!!`, function(err){
 	if(err){
 		console.log("unable to write to file: " + err)
 	}
