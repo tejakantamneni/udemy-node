@@ -15,19 +15,36 @@ var addNote = (title, body) => {
 };
 
 var getAll = () => {
-    var notes = loadNotes();
-    notes.forEach(function(note){
-    	console.log(note.title, " : ", note.body);
-    });
+   var notes = loadNotes();
+   if(notes.length == 0){
+   		console.log(`There are no notes in the system.`)
+   }
+   logNotes(notes);
 };
 
 var readNote = (title) => {
-    console.log('Read note with title:', title);
+    var notes = loadNotes();
+    var matchingNotes = notes.filter( note => note.title == title);
+    if(matchingNotes.length == 0){
+    	console.log(`No notes found with title ${title}`)
+    }else{
+    	console.log(`Notes matching with title ${title}`)
+	    logNotes(matchingNotes);
+    }
 };
 
 var removeNote = (title) => {
-    console.log(`Removing note with title:`, title);
+    var notes = loadNotes();
+    var matchingNotes = notes.filter( note => note.title != title);
+    persistNotes(matchingNotes);
+    console.log("Removed matching notes...")
 };
+
+function logNotes(notes){
+	 notes.forEach(function(note){
+    	console.log(note.title, " : ", note.body);
+    });
+}
 
 function loadNotes(){
 	var notes = [];
