@@ -1,8 +1,21 @@
-console.log('running notes.js')
 
+const fs = require('fs');
+const FILE_NAME = './notes-data.json';
 
 var addNote = (title, body) => {
-    console.log(`Adding note:`, title, body);
+    
+    var note = {
+    	title, body
+    }
+
+    fs.exists
+    var notes = [];
+	try{
+		notes = JSON.parse(fs.readFileSync(FILE_NAME));
+	}catch(e){}
+    notes.push(note);
+    fs.writeFileSync(FILE_NAME, JSON.stringify(notes));
+    console.log("Note saved successfully...")
 };
 
 var getAll = () => {
