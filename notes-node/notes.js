@@ -7,19 +7,18 @@ var addNote = (title, body) => {
     var note = {
     	title, body
     }
-
-    fs.exists
-    var notes = [];
-	try{
-		notes = JSON.parse(fs.readFileSync(FILE_NAME));
-	}catch(e){}
+    
+    var notes = loadNotes();
     notes.push(note);
-    fs.writeFileSync(FILE_NAME, JSON.stringify(notes));
+    persistNotes(notes);
     console.log("Note saved successfully...")
 };
 
 var getAll = () => {
-    console.log('Show all Notes...')
+    var notes = loadNotes();
+    notes.forEach(function(note){
+    	console.log(note.title, " : ", note.body);
+    });
 };
 
 var readNote = (title) => {
@@ -29,6 +28,20 @@ var readNote = (title) => {
 var removeNote = (title) => {
     console.log(`Removing note with title:`, title);
 };
+
+function loadNotes(){
+	var notes = [];
+	try{
+		notes = JSON.parse(fs.readFileSync(FILE_NAME));
+	}catch(e){
+		//ignore this assuming that error means no file exists
+	}
+	return notes;
+}
+
+function persistNotes(notes){
+	fs.writeFileSync(FILE_NAME, JSON.stringify(notes));
+}
 
 module.exports = {
     addNote,
