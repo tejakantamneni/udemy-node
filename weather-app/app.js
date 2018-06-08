@@ -15,17 +15,13 @@ const argv = yargs.options({
     .alias('help', 'h')
     .argv;
 
-geocode.geocodeAddress(argv.a, (errorMessage, results) => {
-    if (errorMessage) {
-        console.log(errorMessage);
-    } else {
-        //console.log(JSON.stringify(results, undefined, 2));
-        darksky.weatherInfo(results.lat, results.lng, (error, weatherData) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log("Weather Information for", results.address, "is", weatherData.temperature);
-            }
-        });
-    }
-});
+geocode.geocodeAddress(argv.a)
+    .then((results) => {
+        return darksky.weatherInfo(results.lat, results.lng);
+    })
+    .then((weatherInfo) => {
+        console.log("Temerature: ", weatherInfo.temperature);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
