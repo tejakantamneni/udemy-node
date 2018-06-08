@@ -1,18 +1,21 @@
 
 const request = require('request');
 
-var geocodeAddress = (address) => {
+var geocodeAddress = (address, callback) => {
     request({
         url: `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBCGn5jVr3mZ5JkNds5h_VlGxcoIoD1bUQ&address=${encodeURIComponent(address)}`,
         json: true
     }, (error, response, body) => {
         if (error) {
-            console.log("Unable to fetch the weather data.");
+        	callback("Unable to connect to google services.");
         } else if (body.status === 'ZERO_RESULTS') {
-            console.log("address not found.")
+            callback("Address not Found.")
         } else {
-            console.log(JSON.stringify(body, undefined, 2));
-            console.log(body.results[0].geometry.location)
+            callback(undefined, {
+            	address: body.results[0].formatted_address,
+            	lat: body.results[0].geometry.location.lat,
+            	lng: body.results[0].geometry.location.lng
+            });
         }
     });
 }

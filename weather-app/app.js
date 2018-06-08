@@ -1,5 +1,4 @@
 
-const request = require('request');
 const yargs =  require('yargs')
 
 const geocode = require('./geocode/geocode.js')
@@ -16,16 +15,10 @@ const argv = yargs.options({
 .alias('help', 'h')
 .argv;
 
-request({
-	url : `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBCGn5jVr3mZ5JkNds5h_VlGxcoIoD1bUQ&address=${encodeURIComponent(argv.a)}`,
-	json: true
-}, (error, response, body) => {
-	if(error){
-		console.log("Unable to fetch the weather data.");
-	}else if( body.status === 'ZERO_RESULTS'){
-		console.log("address not found.")
+geocode.geocodeAddress(argv.a, (errorMessage, results) => {
+	if(errorMessage){
+		console.log(errorMessage);
 	}else{
-		console.log(JSON.stringify(body, undefined, 2));
-		console.log(body.results[0].geometry.location)		
+		console.log(JSON.stringify(results, undefined, 2));
 	}
 });
