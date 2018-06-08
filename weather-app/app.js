@@ -2,6 +2,8 @@
 const request = require('request');
 const yargs =  require('yargs')
 
+const geocode = require('./geocode/geocode.js')
+
 const argv = yargs.options({
 	a : {
 		demand: true,
